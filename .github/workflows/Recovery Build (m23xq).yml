@@ -165,3 +165,30 @@ jobs:
           Target: ${{ github.event.inputs.BUILD_TARGET }}.img
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Message Telegram
+      
+      uses: F2had/pr-telegram-action@v1.0.0
+      
+      with: 
+          bot_token: '${{ secrets.BotToken }}'
+          
+          chat_id: '${{ secrets.CHATID }}'
+          
+          MESSAGE_THREAD_ID: '${{ secrets.MESSAGE_THREAD_ID }}'
+
+          COMMIT_MESSAGE: '${{ github.event.head_commit.message }}'
+
+          COMMIT_URL: '${{ github.event.head_commit.url }}'
+
+          RUN_URL: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+    - name: Delete workflow runs
+
+      uses: Mattraks/delete-workflow-runs@v2
+
+      with:
+
+          retain_days: 0
+
+          keep_minimum_runs: 1
