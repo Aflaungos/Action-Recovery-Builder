@@ -174,8 +174,6 @@ jobs:
           bot_token: '${{ secrets.BotToken }}'
           
           chat_id: '${{ secrets.CHATID }}'
-          
-          MESSAGE_THREAD_ID: '${{ secrets.MESSAGE_THREAD_ID }}'
 
           COMMIT_MESSAGE: '${{ github.event.head_commit.message }}'
 
