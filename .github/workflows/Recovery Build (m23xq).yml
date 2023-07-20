@@ -105,7 +105,12 @@ jobs:
         git config --global user.email "b170420nc@gmail.com"
         repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
       id: pwd
-          
+
+    - name: Setup fix
+      run: |
+        git clone 'https://github.com/Aflaungos/local_manifest' -b 'TWRP_fix' './.repo/local_manifests'
+      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+
     - name: Repo Sync
       run: |
         repo sync -j$(nproc --all) --force-sync
@@ -131,11 +136,6 @@ jobs:
         cond: ${{ github.event.inputs.MANIFEST_BRANCH == 'twrp-11' || github.event.inputs.MANIFEST_BRANCH == 'twrp-12.1' }}
         if_true: twrp
         if_false: omni
-
-    - name: Setup fix
-      run: |
-        git clone 'https://github.com/Aflaungos/local_manifest' -b 'TWRP_fix' './.repo/local_manifests'
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Sync Device Dependencies
       run: |
