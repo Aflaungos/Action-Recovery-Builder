@@ -132,17 +132,17 @@ jobs:
         if_true: twrp
         if_false: omni
 
+    - name: Set up Device specific TWRP fix
+      run: |
+        git clone https://github.com/Aflaungos/local_manifest -b TWRP_fix ./.repo/local_manifests
+      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+
     - name: Sync Device Dependencies
       run: |
         bash ${GITHUB_WORKSPACE}/scripts/convert.sh ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies
         repo sync -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
       continue-on-error: true
-
-    - name: Set up Device specific TWRP fix
-      run: |
-        git clone https://github.com/Aflaungos/local_manifest -b TWRP_fix ./.repo/local_manifests
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Set Swap Space
       uses: pierotofy/set-swap-space@master
