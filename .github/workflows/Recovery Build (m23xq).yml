@@ -132,9 +132,9 @@ jobs:
         if_true: twrp
         if_false: omni
 
-    - name: Set up Device specific TWRP fix
+    - name: Setup fix
       run: |
-        git clone https://github.com/Aflaungos/local_manifest -b TWRP_fix ./.repo/local_manifests
+        git clone 'https://github.com/Aflaungos/local_manifest' -b 'TWRP_fix' './.repo/local_manifests'
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Sync Device Dependencies
