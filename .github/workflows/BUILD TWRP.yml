@@ -1,4 +1,4 @@
-name: Recovery Build (m23xq)
+name: Build (m23xq)
 
 on:
   workflow_dispatch:
