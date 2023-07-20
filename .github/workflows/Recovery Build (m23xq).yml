@@ -171,27 +171,40 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Message Telegram
-      
-      uses: F2had/pr-telegram-action@v1.0.0
-      
-      with: 
-          bot_token: '${{ secrets.BotToken }}'
+    - name: send telegram message
+      uses: appleboy/telegram-action@master
+      with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+    - uses: actions/checkout@v3
+      with:
+          path: KernelSU
+          fetch-depth: 0
+
+    - name: List artifacts
+      run: |
+          tree
           
-          chat_id: '${{ secrets.CHATID }}'
-
-          COMMIT_MESSAGE: '${{ github.event.head_commit.message }}'
-
-          COMMIT_URL: '${{ github.event.head_commit.url }}'
-
-          RUN_URL: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+    - name: Upload images artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: Recovery
+          path: |
+            workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img
+            workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip'
 
     - name: Delete workflow runs
-
       uses: Mattraks/delete-workflow-runs@v2
-
       with:
-
           retain_days: 0
-
           keep_minimum_runs: 1
